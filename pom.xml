@@ -28,7 +28,7 @@
     <version>16.10.0</version>
   </parent>
   <artifactId>prismjs</artifactId>
-  <version>1.0.5-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
   <name>Prism.js Macro</name>
   <description>Syntax highlighting Macro based on Prism.js</description>
   <url>http://extensions.xwiki.org/xwiki/bin/view/Extension/Prism.js%20Macro/</url>

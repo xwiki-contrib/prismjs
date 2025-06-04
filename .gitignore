@@ -54,6 +54,9 @@ nbproject
 # Gradle Enterprise
 .mvn/.gradle-enterprise
 
+# GitHub
+.github
+
 # Misc
 *.log.*
 *.log

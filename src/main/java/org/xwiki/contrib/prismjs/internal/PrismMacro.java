@@ -20,7 +20,6 @@
 package org.xwiki.contrib.prismjs.internal;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,6 +30,8 @@ import javax.inject.Singleton;
 
 import org.apache.commons.lang.StringUtils;
 import org.xwiki.component.annotation.Component;
+import org.xwiki.contrib.prismjs.PrismMacroLayout;
+import org.xwiki.contrib.prismjs.PrismMacroParameters;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.RawBlock;
 import org.xwiki.rendering.macro.AbstractMacro;
@@ -66,6 +67,8 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
     private static final String[] SEARCH_STRINGS = new String[] { "<", "&" };
 
     private static final String[] REPLACE_STRINGS = new String[] { "&lt;", "&amp;" };
+
+    private static final Map<String, Object> CSS_PARAMETERS =  Collections.singletonMap("rel", "stylesheet");
 
     @Inject
     @Named("linkx")
@@ -106,11 +109,10 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
 
         // Inject a LINK HTML tag in the HEAD to load the Prism CSS:
         //   <link href="themes/prism.css" rel="stylesheet" />
-        String prismCSSURL = ((WebJarsScriptService) this.webjarsScriptService).url("org.webjars.npm:prismjs",
-            "themes/prism.css");
-        Map<String, Object> linkParameters = new HashMap<>();
-        linkParameters.put("rel", "stylesheet");
-        this.linkxExtension.use(prismCSSURL, linkParameters);
+        addCSSForPrism();
+
+        // Add the styling for the line-numbers plugin
+        addCSSForLineNumberPluginIfNeeded(parameters);
 
         // TODO: Once https://jira.xwiki.org/browse/XWIKI-12788 is implemented, remove RegisterPrismUIExtension and
         // the custom JS and instead use the js*x here.
@@ -122,18 +124,40 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
         // Since the content inside the <code> tag is going to be parsed as HTML content by the browser, we need to
         // escape the & and < characters.
         String normalizedContent = StringUtils.replaceEach(content, SEARCH_STRINGS, REPLACE_STRINGS);
-        String html = computeHTML(normalizedContent, parameters.getLanguage(), context.isInline());
+        String html = computeHTML(normalizedContent, parameters, context.isInline());
 
         return Collections.singletonList(new RawBlock(html, Syntax.HTML_5_0));
     }
 
-    private String computeHTML(String content, String language, boolean isInline)
+    private void addCSSForPrism()
+    {
+        this.linkxExtension.use(getURL("themes/prism.css"), CSS_PARAMETERS);
+    }
+
+    private void addCSSForLineNumberPluginIfNeeded(PrismMacroParameters parameters)
+    {
+        if (parameters.getLayout().equals(PrismMacroLayout.LINENUMBERS)) {
+            this.linkxExtension.use(getURL("plugins/line-numbers/prism-line-numbers.css"), CSS_PARAMETERS);
+        }
+    }
+
+    private String getURL(String cssPath)
+    {
+        return  ((WebJarsScriptService) this.webjarsScriptService).url("org.webjars.npm:prismjs", cssPath);
+    }
+
+    private String computeHTML(String content, PrismMacroParameters parameters, boolean isInline)
     {
         return String.format("%s<code class=\"%s\">%s</code>%s",
-            isInline ? "" : "<pre>",
-            computeLanguageCSS(language),
+            isInline ? "" : computeOpeningPRE(parameters.getLayout()),
+            computeLanguageCSS(parameters.getLanguage()),
             content,
             isInline ? "" : "</pre>");
+    }
+
+    private String computeOpeningPRE(PrismMacroLayout layout)
+    {
+        return String.format("<pre%s>", layout.equals(PrismMacroLayout.LINENUMBERS) ? " class=\"line-numbers\"" : "");
     }
 
     private String computeLanguageCSS(String language)

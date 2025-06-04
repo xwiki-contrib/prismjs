@@ -17,39 +17,48 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.prismjs.internal;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
-
-import org.xwiki.component.annotation.Component;
+package org.xwiki.contrib.prismjs;
 
 /**
- * Register the Prism.js file as {@code prismjs} in RequireJS, so that it can then be loaded in a custom JS file
- * added through a JSRX in the Prism macro.
- *
+ * Values allowed in the <code>layout</code> parameter of the macro.
+ * 
  * @version $Id$
  * @since 1.0
  */
-@Component
-@Named(RegisterPrismUIExtension.ID)
-@Singleton
-public class RegisterPrismUIExtension extends AbstractPrismUIExtension
+public enum PrismMacroLayout
 {
     /**
-     * The id of the UI extension.
+     * Don't display line numbers.
      */
-    public static final String ID = "org.xwiki.contrib.prismjs.requirejs.module.core";
+    PLAIN(Constants.PLAIN_HINT),
+    /**
+     * Display line numbers.
+     */
+    LINENUMBERS(Constants.LINENUMBERS_HINT);
 
-    @Override
-    public void initialize()
+    private String hint;
+
+    PrismMacroLayout(String hint)
     {
-        initialize("prismjs", "prism.js");
+        this.hint = hint;
     }
 
-    @Override
-    public String getId()
+    /**
+     * Convenience class holding hint values. Links the outer enum class to the component classes as it is not
+     * possible to reference enums in annotations (and avoids using plain strings).
+     * 
+     * @version $Id$
+     */
+    public static class Constants
     {
-        return ID;
+        /**
+         * @see PrismMacroLayout#PLAIN
+         */
+        public static final String PLAIN_HINT = "plain";
+
+        /**
+         * @see PrismMacroLayout#LINENUMBERS
+         */
+        public static final String LINENUMBERS_HINT = "linenumbers";
     }
 }

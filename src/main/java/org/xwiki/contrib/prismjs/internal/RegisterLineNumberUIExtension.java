@@ -19,35 +19,37 @@
  */
 package org.xwiki.contrib.prismjs.internal;
 
-import org.xwiki.properties.annotation.PropertyDescription;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import org.xwiki.component.annotation.Component;
 
 /**
- * Parameters for the {@link PrismMacro} Macro.
+ * Register the Line Numbers plugin for prism.js file as {@code prismjs-line-numbers} in RequireJS, so that it can then
+ * be loaded in a custom JS file added through a JSRX in the Prism macro.
  *
  * @version $Id$
  * @since 1.0
  */
-public class PrismMacroParameters
+@Component
+@Named(RegisterLineNumberUIExtension.ID)
+@Singleton
+public class RegisterLineNumberUIExtension extends AbstractPrismUIExtension
 {
     /**
-     * The language identifier.
+     * The id of the UI extension.
      */
-    private String language;
+    public static final String ID = "org.xwiki.contrib.prismjs.requirejs.module.line-numbers";
 
-    /**
-     * @param language the language identifier.
-     */
-    @PropertyDescription("the language identifier (java, python, etc.)")
-    public void setLanguage(String language)
+    @Override
+    public void initialize()
     {
-        this.language = language;
+        initialize("prismjs-line-numbers", "plugins/line-numbers/prism-line-numbers.js");
     }
 
-    /**
-     * @return the language identifier.
-     */
-    public String getLanguage()
+    @Override
+    public String getId()
     {
-        return this.language;
+        return ID;
     }
 }
