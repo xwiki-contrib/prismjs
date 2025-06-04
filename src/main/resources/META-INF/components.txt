@@ -1,0 +1,2 @@
+org.xwiki.contrib.prismjs.internal.RegisterPrismUIExtension
+org.xwiki.contrib.prismjs.internal.PrismMacro
