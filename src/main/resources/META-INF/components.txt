@@ -1,3 +1,4 @@
 org.xwiki.contrib.prismjs.internal.RegisterPrismUIExtension
 org.xwiki.contrib.prismjs.internal.RegisterLineNumberUIExtension
+org.xwiki.contrib.prismjs.internal.RegisterAutoloaderUIExtension
 org.xwiki.contrib.prismjs.internal.PrismMacro

@@ -17,6 +17,39 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-require(['prismjs'], () => {});
-require(['prismjs-line-numbers'], () => {});
-require(['prismjs-autoloader'], () => {});
+package org.xwiki.contrib.prismjs.internal;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import org.xwiki.component.annotation.Component;
+
+/**
+ * Register the Autoloader plugin for prism.js file as {@code prismjs-autoloader} in RequireJS, so that it can then
+ * be loaded in a custom JS file added through a JSRX in the Prism macro.
+ *
+ * @version $Id$
+ * @since 1.0
+ */
+@Component
+@Named(RegisterAutoloaderUIExtension.ID)
+@Singleton
+public class RegisterAutoloaderUIExtension extends AbstractPrismUIExtension
+{
+    /**
+     * The id of the UI extension.
+     */
+    public static final String ID = "org.xwiki.contrib.prismjs.requirejs.module.autoloader";
+
+    @Override
+    public void initialize()
+    {
+        initialize("prismjs-autoloader", "plugins/autoloader/prism-autoloader.js");
+    }
+
+    @Override
+    public String getId()
+    {
+        return ID;
+    }
+}
