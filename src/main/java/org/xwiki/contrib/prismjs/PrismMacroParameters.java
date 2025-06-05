@@ -20,7 +20,9 @@
 package org.xwiki.contrib.prismjs;
 
 import org.xwiki.contrib.prismjs.internal.PrismMacro;
+import org.xwiki.properties.annotation.PropertyAdvanced;
 import org.xwiki.properties.annotation.PropertyDescription;
+import org.xwiki.rendering.macro.source.MacroContentSourceReference;
 
 /**
  * Parameters for the {@link PrismMacro} Macro.
@@ -39,6 +41,8 @@ public class PrismMacroParameters
      * The layout format (e.g. plain or with line numbers)
      */
     private PrismMacroLayout layout = PrismMacroLayout.PLAIN;
+
+    private MacroContentSourceReference source;
 
     /**
      * @param language the language identifier.
@@ -72,5 +76,24 @@ public class PrismMacroParameters
     public PrismMacroLayout getLayout()
     {
         return this.layout;
+    }
+
+    /**
+     * @param source the reference of the content to highlight
+     */
+    @PropertyDescription("the reference of the content to highlight instead of the content of the macro"
+        + " (script:myvariable for the entry with name myvariable in the script context)")
+    @PropertyAdvanced
+    public void setSource(MacroContentSourceReference source)
+    {
+        this.source = source;
+    }
+
+    /**
+     * @return the reference of the content to highlight
+     */
+    public MacroContentSourceReference getSource()
+    {
+        return this.source;
     }
 }

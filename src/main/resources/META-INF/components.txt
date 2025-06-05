@@ -1,4 +1,7 @@
 org.xwiki.contrib.prismjs.internal.RegisterPrismUIExtension
 org.xwiki.contrib.prismjs.internal.RegisterLineNumberUIExtension
 org.xwiki.contrib.prismjs.internal.RegisterAutoloaderUIExtension
+org.xwiki.contrib.prismjs.internal.source.DefaultCodeMacroSourceFactory
+org.xwiki.contrib.prismjs.internal.source.ScriptCodeMacroSourceFactory
+org.xwiki.contrib.prismjs.internal.source.StringCodeMacroSourceFactory
 org.xwiki.contrib.prismjs.internal.PrismMacro

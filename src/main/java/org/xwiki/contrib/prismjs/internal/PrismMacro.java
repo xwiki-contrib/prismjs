@@ -32,9 +32,12 @@ import org.apache.commons.lang.StringUtils;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.contrib.prismjs.PrismMacroLayout;
 import org.xwiki.contrib.prismjs.PrismMacroParameters;
+import org.xwiki.contrib.prismjs.source.CodeMacroSource;
+import org.xwiki.contrib.prismjs.source.CodeMacroSourceFactory;
 import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.RawBlock;
 import org.xwiki.rendering.macro.AbstractMacro;
+import org.xwiki.rendering.macro.MacroExecutionException;
 import org.xwiki.rendering.macro.descriptor.DefaultContentDescriptor;
 import org.xwiki.rendering.syntax.Syntax;
 import org.xwiki.rendering.transformation.MacroTransformationContext;
@@ -83,6 +86,9 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
     @Named("webjars")
     private ScriptService webjarsScriptService;
 
+    @Inject
+    private CodeMacroSourceFactory sourceFactory;
+
     /**
      * Create and initialize the descriptor of the macro.
      */
@@ -101,6 +107,7 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
 
     @Override
     public List<Block> execute(PrismMacroParameters parameters, String content, MacroTransformationContext context)
+        throws MacroExecutionException
     {
         // TODO: Verify that when this macro is used several times on the page we don't generate several link and
         // load several times the JS. We need to find a way to only do this once. This could be achieved by navigating
@@ -126,7 +133,13 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
         //   <pre><code class="language-css">p { color: red }</code></pre>
         // Since the content inside the <code> tag is going to be parsed as HTML content by the browser, we need to
         // escape the & and < characters.
-        String normalizedContent = StringUtils.replaceEach(content, SEARCH_STRINGS, REPLACE_STRINGS);
+        CodeMacroSource computedContent = getContent(parameters, content, context);
+        String normalizedContent;
+        if (computedContent != null) {
+            normalizedContent = StringUtils.replaceEach(computedContent.getContent(), SEARCH_STRINGS, REPLACE_STRINGS);
+        } else {
+            normalizedContent = "";
+        }
         String html = computeHTML(normalizedContent, parameters, context.isInline());
 
         return Collections.singletonList(new RawBlock(html, Syntax.HTML_5_0));
@@ -171,5 +184,15 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
     private String computeLanguageCSS(String language)
     {
         return String.format("language-%s", StringUtils.isEmpty(language) ? "none" : language);
+    }
+
+    private CodeMacroSource getContent(PrismMacroParameters parameters, String content,
+        MacroTransformationContext context) throws MacroExecutionException
+    {
+        if (parameters.getSource() != null) {
+            return this.sourceFactory.getContent(parameters.getSource(), context);
+        }
+
+        return content != null ? new CodeMacroSource(null, content, null) : null;
     }
 }
