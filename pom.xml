@@ -30,7 +30,7 @@
   <groupId>org.xwiki.contrib.prismjs</groupId>
   <packaging>pom</packaging>
   <artifactId>prismjs</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.1.2-SNAPSHOT</version>
   <name>Prism.js - Parent POM</name>
   <description>Syntax highlighting Macro based on Prism.js</description>
   <url>http://extensions.xwiki.org/xwiki/bin/view/Extension/Prism.js%20Macro/</url>
@@ -51,6 +51,8 @@
     </developer>
   </developers>
   <modules>
+    <!-- Sorted Alphabetically -->
+    <module>prismjs-code</module>
     <module>prismjs-macro</module>
   </modules>
   <profiles>

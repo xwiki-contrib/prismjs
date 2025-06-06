@@ -25,7 +25,7 @@
   <parent>
     <groupId>org.xwiki.contrib.prismjs</groupId>
     <artifactId>prismjs</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1.2-SNAPSHOT</version>
   </parent>
   <artifactId>prismjs-macro</artifactId>
   <name>Prism.js - Macro</name>
@@ -63,30 +63,10 @@
       <artifactId>prismjs</artifactId>
       <version>1.30.0</version>
     </dependency>
-    <!-- Test dependencies -->
     <dependency>
-      <groupId>org.xwiki.commons</groupId>
-      <artifactId>xwiki-commons-tool-test-component</artifactId>
-      <version>${commons.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-test</artifactId>
-      <version>${rendering.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xwiki.rendering</groupId>
-      <artifactId>xwiki-rendering-syntax-event</artifactId>
-      <version>${rendering.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <!-- Runtime dependency normally provided by the Servlet Container -->
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <scope>test</scope>
+      <groupId>org.xwiki.platform</groupId>
+      <artifactId>xwiki-platform-rendering-macro-code</artifactId>
+      <version>${platform.version}</version>
     </dependency>
   </dependencies>
 </project>

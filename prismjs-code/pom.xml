@@ -27,22 +27,26 @@
     <artifactId>prismjs</artifactId>
     <version>1.1.2-SNAPSHOT</version>
   </parent>
-  <artifactId>prismjs-test</artifactId>
-  <name>Prism.js - Tests - Parent POM</name>
-  <packaging>pom</packaging>
-  <description>Prism.js - Tests - Parent POM</description>
+  <artifactId>prismjs-code</artifactId>
+  <name>Prism.js - Code Macro Replacement</name>
+  <description>Replaces the default Code Macro with the Prism.js Macro</description>
   <properties>
-    <!-- Don't run backward-compatibility checks in test modules since we don't consider them as public APIs -->
-    <xwiki.revapi.skip>true</xwiki.revapi.skip>
-    <!-- Don't run Checkstyle in test modules -->
-    <xwiki.checkstyle.skip>true</xwiki.checkstyle.skip>
+    <xwiki.jacoco.instructionRatio>1.00</xwiki.jacoco.instructionRatio>
+    <!-- Extension Manager name -->
+    <xwiki.extension.name>Prism.js Code Macro Replacement</xwiki.extension.name>
+    <!-- Extension Manager category -->
+    <xwiki.extension.category>macro</xwiki.extension.category>
   </properties>
-  <profiles>
-    <profile>
-      <id>docker</id>
-      <modules>
-        <module>prismsjs-test-docker</module>
-      </modules>
-    </profile>
-  </profiles>
+  <dependencies>
+    <dependency>
+      <groupId>org.xwiki.contrib.prismjs</groupId>
+      <artifactId>prismjs-macro</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xwiki.platform</groupId>
+      <artifactId>xwiki-platform-rendering-macro-code</artifactId>
+      <version>${platform.version}</version>
+    </dependency>
+  </dependencies>
 </project>
