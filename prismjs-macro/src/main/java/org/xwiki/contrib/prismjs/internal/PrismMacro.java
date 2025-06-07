@@ -118,9 +118,6 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
         //   <link href="themes/prism.css" rel="stylesheet" />
         addCSSForPrism();
 
-        // Add the CSS for autoloading grammar files
-        addCSSForAutoloaderPlugin();
-
         // Add the styling for the line-numbers plugin
         addCSSForLineNumberPluginIfNeeded(parameters);
 
@@ -148,11 +145,6 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
     private void addCSSForPrism()
     {
         this.linkxExtension.use(getURL("themes/prism.css"), CSS_PARAMETERS);
-    }
-
-    private void addCSSForAutoloaderPlugin()
-    {
-        this.linkxExtension.use(getURL("plugins/autoloader/prism-autoloader.css"), CSS_PARAMETERS);
     }
 
     private void addCSSForLineNumberPluginIfNeeded(PrismMacroParameters parameters)
