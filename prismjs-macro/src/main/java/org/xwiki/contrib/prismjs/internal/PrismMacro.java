@@ -124,7 +124,7 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
         // TODO: Once https://jira.xwiki.org/browse/XWIKI-12788 is implemented, remove RegisterPrismUIExtension and
         // the custom JS and instead use the js*x here.
         // For now, execute the JS to load prism.js through requirejs
-        this.jsrxExtension.use("load-prism.js");
+        this.jsrxExtension.use("load-prism.js", Map.of("wysiwyg", true));
 
         // Use a RawBlock since we need to generate the following structure for Prism.js to work:
         //   <pre><code class="language-css">p { color: red }</code></pre>

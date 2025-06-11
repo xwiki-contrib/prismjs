@@ -17,6 +17,20 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-require(['prismjs'], () => {});
-require(['prismjs-line-numbers'], () => {});
-require(['prismjs-autoloader'], () => {});
+// Load prism.js first and before the plugins so that when the plugins execute, they can register against Prism.
+// If we use "require['prismjs', 'prismjs-line-numbers', 'prismjs-autoloader']" then there's no guarantee of the
+// loading order.
+require(['jquery', 'prismjs'], ($) => {
+    // Avoid Prism from highlighting automatically since we're forcing the highlighting, as otherwise we get
+    // highlighting flickers because requirejs uses async <script> elements, preventing prism.js from working well.
+    Prism.manual = true;
+    require(['prismjs-line-numbers', 'prismjs-autoloader'], () => {
+        Prism.highlightAll()
+        // To allow the WYSIWYG in-place editor to display highlighted content.
+        $(document).on('xwiki:dom:updated', (event, data) => {
+            for (const element of data.elements) {
+                Prism.highlightAllUnder(element)
+            }
+        })
+    })
+})
