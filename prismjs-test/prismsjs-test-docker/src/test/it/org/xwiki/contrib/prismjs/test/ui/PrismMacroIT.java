@@ -23,7 +23,6 @@ import org.junit.jupiter.api.Test;
 import org.xwiki.test.docker.junit5.TestReference;
 import org.xwiki.test.docker.junit5.UITest;
 import org.xwiki.test.ui.TestUtils;
-import org.xwiki.test.ui.po.ViewPage;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -43,44 +42,56 @@ class PrismMacroIT
         setup.loginAsSuperAdmin();
 
         // Create a page and add some prism.js macro examples
-        ViewPage vp = setup.createPage(reference,
-            "Hello {{prism language=\"html\"}}<p class=prism></p>{{/prism}} world.\n"
-            + "\n"
-            + "{{prism language=\"html\"}}\n"
-            + "<p class=prism></p>\n"
-            + "{{/prism}}\n"
-            + "\n"
-            + "{{prism language=\"java\" layout=\"linenumbers\"}}\n"
-            + "@Component\n"
-            + "@Named(\"prism\")\n"
-            + "@Singleton\n"
-            + "public class PrismMacro extends AbstractMacro<PrismMacroParameters>\n"
-            + "{\n"
-            + "}\n"
-            + "{{/prism}}");
-
-        String expected = "<p>Hello <code class=\"language-html\"><span class=\"token tag\"><span class=\"token tag\">"
-            + "<span class=\"token punctuation\">&lt;</span>p</span> <span class=\"token attr-name\">class</span>"
-            + "<span class=\"token attr-value\"><span class=\"token punctuation attr-equals\">=</span>prism</span>"
-            + "<span class=\"token punctuation\">&gt;</span></span><span class=\"token tag\"><span class=\"token tag\">"
-            + "<span class=\"token punctuation\">&lt;/</span>p</span><span class=\"token punctuation\">&gt;"
-            + "</span></span></code> world.</p>"
-            + "<pre class=\"language-html\" tabindex=\"0\"><code class=\"language-html\"><span class=\"token tag\">"
-            + "<span class=\"token tag\"><span class=\"token punctuation\">&lt;</span>p</span> "
-            + "<span class=\"token attr-name\">class</span><span class=\"token attr-value\">"
-            + "<span class=\"token punctuation attr-equals\">=</span>prism</span>"
-            + "<span class=\"token punctuation\">&gt;</span></span><span class=\"token tag\"><span class=\"token tag\">"
-            + "<span class=\"token punctuation\">&lt;/</span>p</span><span class=\"token punctuation\">&gt;"
-            + "</span></span></code></pre>"
-            + "<pre class=\"line-numbers language-java\" tabindex=\"0\"><code class=\"language-java\">@Component\n"
-            + "@Named(\"prism\")\n"
-            + "@Singleton\n"
-            + "public class PrismMacro extends AbstractMacro&lt;PrismMacroParameters&gt;\n"
-            + "{\n"
-            + "}</code></pre>";
+        setup.createPage(reference, """
+            Hello {{prism language="html"}}<p class=prism></p>{{/prism}} world.
+            
+            {{prism language="html"}}
+            <p class=prism></p>
+            {{/prism}}
+            
+            {{prism language="java" layout="linenumbers"}}
+            @Component
+            @Named("prism")
+            @Singleton
+            public class PrismMacro extends AbstractMacro<PrismMacroParameters>
+            {
+            }
+            {{/prism}}""");
 
         String source = setup.getDriver().getPageSource();
-        assertThat(source, containsString(expected));
 
+        String expectedMacro1 = """
+            <p>Hello <code class="language-html"><span class="token tag"><span class="token tag">\
+            <span class="token punctuation">&lt;</span>p</span> <span class="token attr-name">class</span>\
+            <span class="token attr-value"><span class="token punctuation attr-equals">=</span>prism</span>\
+            <span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag">\
+            <span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>\
+            </code> world.</p>""";
+        assertThat(source, containsString(expectedMacro1));
+
+        String expectedMacro2 = """
+            <pre class="language-html" tabindex="0"><code class="language-html"><span class="token tag">\
+            <span class="token tag"><span class="token punctuation">&lt;</span>p</span> \
+            <span class="token attr-name">class</span><span class="token attr-value">\
+            <span class="token punctuation attr-equals">=</span>prism</span><span class="token punctuation">&gt;</span>\
+            </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span>\
+            <span class="token punctuation">&gt;</span></span></code></pre>""";
+        assertThat(source, containsString(expectedMacro2));
+
+        String expectedMacro3 = """
+            <pre class="line-numbers language-java" tabindex="0"><code class="language-java">\
+            <span class="token annotation punctuation">@Component</span>
+            <span class="token annotation punctuation">@Named</span><span class="token punctuation">(</span>\
+            <span class="token string">"prism"</span><span class="token punctuation">)</span>
+            <span class="token annotation punctuation">@Singleton</span>
+            <span class="token keyword">public</span> <span class="token keyword">class</span> \
+            <span class="token class-name">PrismMacro</span> <span class="token keyword">extends</span> \
+            <span class="token class-name">AbstractMacro</span><span class="token generics">\
+            <span class="token punctuation">&lt;</span><span class="token class-name">PrismMacroParameters</span>\
+            <span class="token punctuation">&gt;</span></span>
+            <span class="token punctuation">{</span>
+            <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span>\
+            <span></span><span></span><span></span><span></span><span></span></span></code></pre>""";
+        assertThat(source, containsString(expectedMacro3));
     }
 }
