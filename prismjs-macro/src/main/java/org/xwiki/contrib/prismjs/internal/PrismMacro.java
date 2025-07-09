@@ -68,10 +68,6 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
      */
     private static final String CONTENT_DESCRIPTION = "the content to highlight";
 
-    private static final String[] SEARCH_STRINGS = new String[] { "<", "&" };
-
-    private static final String[] REPLACE_STRINGS = new String[] { "&lt;", "&amp;" };
-
     private static final Map<String, Object> CSS_PARAMETERS =  Collections.singletonMap("rel", "stylesheet");
 
     @Inject
