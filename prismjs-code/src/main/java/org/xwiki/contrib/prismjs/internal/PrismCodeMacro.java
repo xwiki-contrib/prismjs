@@ -64,6 +64,6 @@ public class PrismCodeMacro extends CodeMacro
         MacroContentSourceReference sourceReference = parameters.getSource();
         prismParameters.setSource(sourceReference);
 
-        return prismMacro.execute(prismParameters, content, context);
+        return this.prismMacro.execute(prismParameters, content, context);
     }
 }

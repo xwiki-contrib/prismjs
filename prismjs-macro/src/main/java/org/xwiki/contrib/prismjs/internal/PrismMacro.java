@@ -44,6 +44,7 @@ import org.xwiki.rendering.transformation.MacroTransformationContext;
 import org.xwiki.script.service.ScriptService;
 import org.xwiki.skinx.SkinExtension;
 import org.xwiki.webjars.script.WebJarsScriptService;
+import org.xwiki.xml.XMLUtils;
 
 /**
  * Perform syntax highlighting on the content of the Macro.
@@ -133,7 +134,7 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
         CodeMacroSource computedContent = getContent(parameters, content, context);
         String normalizedContent;
         if (computedContent != null) {
-            normalizedContent = StringUtils.replaceEach(computedContent.getContent(), SEARCH_STRINGS, REPLACE_STRINGS);
+            normalizedContent = XMLUtils.escapeElementText(computedContent.getContent());
         } else {
             normalizedContent = "";
         }
