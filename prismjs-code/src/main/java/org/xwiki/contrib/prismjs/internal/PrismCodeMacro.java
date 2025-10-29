@@ -29,9 +29,11 @@ import org.xwiki.component.annotation.Component;
 import org.xwiki.contrib.prismjs.PrismMacroLayout;
 import org.xwiki.contrib.prismjs.PrismMacroParameters;
 import org.xwiki.rendering.block.Block;
+import org.xwiki.rendering.block.MacroBlock;
 import org.xwiki.rendering.internal.macro.code.CodeMacro;
 import org.xwiki.rendering.macro.Macro;
 import org.xwiki.rendering.macro.MacroExecutionException;
+import org.xwiki.rendering.macro.MacroPreparationException;
 import org.xwiki.rendering.macro.code.CodeMacroLayout;
 import org.xwiki.rendering.macro.code.CodeMacroParameters;
 import org.xwiki.rendering.macro.source.MacroContentSourceReference;
@@ -51,6 +53,12 @@ public class PrismCodeMacro extends CodeMacro
     @Inject
     @Named("prism")
     private Macro prismMacro;
+
+    @Override
+    public void prepare(MacroBlock macroBlock) throws MacroPreparationException
+    {
+        // Overridden so that CodeMacro#prepare is not called, as it's expensive.
+    }
 
     @Override
     public List<Block> execute(CodeMacroParameters parameters, String content, MacroTransformationContext context)
