@@ -50,6 +50,12 @@
          Test only dependencies
          ================================ -->
     <dependency>
+      <groupId>org.xwiki.contrib.prismjs</groupId>
+      <artifactId>prismjs-test-pageobjects</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.xwiki.platform</groupId>
       <artifactId>xwiki-platform-test-docker</artifactId>
       <version>${platform.version}</version>
