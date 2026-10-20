@@ -31,7 +31,7 @@
   <name>Prism.js - Macro</name>
   <description>Syntax highlighting Macro based on Prism.js</description>
   <properties>
-    <xwiki.jacoco.instructionRatio>0.68</xwiki.jacoco.instructionRatio>
+    <xwiki.jacoco.instructionRatio>0.69</xwiki.jacoco.instructionRatio>
     <!-- Extension Manager name -->
     <xwiki.extension.name>Prism.js Macro</xwiki.extension.name>
     <!-- Extension Manager category -->
@@ -80,4 +80,26 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <configuration>
+          <analysisConfiguration>
+            <revapi.differences>
+              <differences combine.children="append">
+                <item>
+                  <ignore>true</ignore>
+                  <code>java.class.removed</code>
+                  <old>class org.xwiki.contrib.prismjs.PrismMacroLayout.Constants</old>
+                  <justification>Unused hint values: the layouts are not implemented as components</justification>
+                </item>
+              </differences>
+            </revapi.differences>
+          </analysisConfiguration>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
