@@ -85,20 +85,26 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <configuration>
-          <analysisConfiguration>
-            <revapi.differences>
-              <differences combine.children="append">
-                <item>
-                  <ignore>true</ignore>
-                  <code>java.class.removed</code>
-                  <old>class org.xwiki.contrib.prismjs.PrismMacroLayout.Constants</old>
+        <executions>
+          <execution>
+            <id>revapi-check</id>
+            <configuration>
+              <analysisConfiguration>
+                <revapi.differences>
                   <justification>Unused hint values: the layouts are not implemented as components</justification>
-                </item>
-              </differences>
-            </revapi.differences>
-          </analysisConfiguration>
-        </configuration>
+                  <criticality>highlight</criticality>
+                  <differences combine.children="append">
+                    <item>
+                      <ignore>true</ignore>
+                      <code>java.class.removed</code>
+                      <old>class org.xwiki.contrib.prismjs.PrismMacroLayout.Constants</old>
+                    </item>
+                  </differences>
+                </revapi.differences>
+              </analysisConfiguration>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
