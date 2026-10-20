@@ -160,11 +160,11 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
 
     private String computeHTML(String content, PrismMacroParameters parameters, boolean isInline)
     {
-        return String.format("%s<code class=\"%s\">%s</code>%s",
-            isInline ? "" : computeOpeningPRE(parameters.getLayout()),
-            computeLanguageCSS(parameters.getLanguage()),
-            content,
-            isInline ? "" : "</pre>");
+        return (isInline ? "" : computeOpeningPRE(parameters.getLayout()))
+            + "<code class=\"" + computeLanguageCSS(parameters.getLanguage()) + "\">"
+            + content
+            + "</code>"
+            + (isInline ? "" : "</pre>");
     }
 
     private String computeOpeningPRE(PrismMacroLayout layout)
