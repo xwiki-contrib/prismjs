@@ -3,9 +3,9 @@
 A Syntax highlighting macro based on [prism.js](https://prismjs.com/).
 
 * Project Lead: [Vincent Massol](https://www.xwiki.org/xwiki/bin/view/XWiki/VincentMassol)
-* Documentation & Downloads:
-  * [Prism.js Macro](https://extensions.xwiki.org/xwiki/bin/view/Extension/PrismMacro/)
-  * [Prism.js Code Macro Replacement](https://extensions.xwiki.org/xwiki/bin/view/Extension/Prism.js%20Code%20Macro%20Replacement/)
+* Documentation & Downloads: [Prism.js](https://extensions.xwiki.org/xwiki/bin/view/Extension/PrismJS/)
+  * [Prism.js Macro](https://extensions.xwiki.org/xwiki/bin/view/Extension/PrismJS/PrismMacro/)
+  * [Prism.js Code Macro Replacement](https://extensions.xwiki.org/xwiki/bin/view/Extension/PrismJS/PrismCodeMacroReplacement/)
 * [Issue Tracker](https://jira.xwiki.org/browse/XPRISMJS)
 * Communication: [Forum](https://dev.xwiki.org/xwiki/bin/view/Community/Discuss), [Chat](https://dev.xwiki.org/xwiki/bin/view/Community/Chat)
 * [Development Practices](https://dev.xwiki.org)

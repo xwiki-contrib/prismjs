@@ -32,8 +32,10 @@
   <artifactId>prismjs</artifactId>
   <version>1.4-SNAPSHOT</version>
   <name>Prism.js - Parent POM</name>
-  <description>Syntax highlighting Macro based on Prism.js</description>
+  <description>Syntax highlighting based on Prism.js</description>
   <properties>
+    <!-- Extension Manager name -->
+    <xwiki.extension.name>Prism.js</xwiki.extension.name>
     <xwiki.issueManagement.url>https://jira.xwiki.org/browse/XPRISMJS</xwiki.issueManagement.url>
     <xwiki.release.jira.skip>false</xwiki.release.jira.skip>
   </properties>
