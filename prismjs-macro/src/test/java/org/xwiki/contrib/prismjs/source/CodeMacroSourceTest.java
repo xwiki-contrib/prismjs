@@ -56,8 +56,8 @@ class CodeMacroSourceTest
         assertEquals(source, sameSource);
         assertEquals(source.hashCode(), sameSource.hashCode());
 
-        assertNotEquals(source, null);
-        assertNotEquals(source, "content");
+        assertNotEquals(null, source);
+        assertNotEquals("content", source);
         assertNotEquals(source, new CodeMacroSource(new MacroContentSourceReference("string", "other"),
             "content", "java"));
         assertNotEquals(source, new CodeMacroSource(REFERENCE, "other", "java"));
