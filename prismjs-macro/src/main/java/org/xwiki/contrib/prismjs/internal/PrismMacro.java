@@ -172,7 +172,8 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
 
     private String computeLanguageCSS(String language)
     {
-        return String.format("language-%s", StringUtils.isEmpty(language) ? "none" : language);
+        // The value ends up in an HTML attribute, so it needs to be escaped.
+        return "language-" + (StringUtils.isEmpty(language) ? "none" : XMLUtils.escapeAttributeValue(language));
     }
 
     private CodeMacroSource getContent(PrismMacroParameters parameters, String content,
