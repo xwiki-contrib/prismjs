@@ -70,6 +70,9 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
 
     private static final Map<String, Object> CSS_PARAMETERS =  Collections.singletonMap("rel", "stylesheet");
 
+    // Also load the resources in the WYSIWYG editor, so that the highlighted content is displayed there too.
+    private static final Map<String, Object> RESOURCE_PARAMETERS = Map.of("wysiwyg", true);
+
     @Inject
     @Named("linkx")
     private SkinExtension linkxExtension;
@@ -77,6 +80,10 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
     @Inject
     @Named("jsrx")
     private SkinExtension jsrxExtension;
+
+    @Inject
+    @Named("ssrx")
+    private SkinExtension ssrxExtension;
 
     // TODO: Replace with "private WebJarsUrlFactory webJarsUrlFactory;" when the parent POM is moved to XWiki 17.3.0+
     @Inject
@@ -111,9 +118,9 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
         // the XDOM. However this would not support an include macro, including some doc using this macro.
         // Maybe the use() APIs perform a check to only issue the same content once?
 
-        // Inject a LINK HTML tag in the HEAD to load the Prism CSS:
-        //   <link href="themes/prism.css" rel="stylesheet" />
-        addCSSForPrism();
+        // Load our own Prism theme instead of the default themes/prism.css one, since the default theme doesn't have
+        // enough contrast for WCAG compliance.
+        this.ssrxExtension.use("prism-accessible.css", RESOURCE_PARAMETERS);
 
         // Add the styling for the line-numbers plugin
         addCSSForLineNumberPluginIfNeeded(parameters);
@@ -121,7 +128,7 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
         // TODO: Once https://jira.xwiki.org/browse/XWIKI-12788 is implemented, remove RegisterPrismUIExtension and
         // the custom JS and instead use the js*x here.
         // For now, execute the JS to load prism.js through requirejs
-        this.jsrxExtension.use("load-prism.js", Map.of("wysiwyg", true));
+        this.jsrxExtension.use("load-prism.js", RESOURCE_PARAMETERS);
 
         // Use a RawBlock since we need to generate the following structure for Prism.js to work:
         //   <pre><code class="language-css">p { color: red }</code></pre>
@@ -137,11 +144,6 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
         String html = computeHTML(normalizedContent, parameters, context.isInline());
 
         return Collections.singletonList(new RawBlock(html, Syntax.HTML_5_0));
-    }
-
-    private void addCSSForPrism()
-    {
-        this.linkxExtension.use(getURL("themes/prism.css"), CSS_PARAMETERS);
     }
 
     private void addCSSForLineNumberPluginIfNeeded(PrismMacroParameters parameters)

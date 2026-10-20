@@ -19,13 +19,18 @@
  */
 package org.xwiki.contrib.prismjs.test.ui;
 
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.xwiki.contrib.prismjs.test.po.PrismCodeElement;
 import org.xwiki.test.docker.junit5.TestReference;
 import org.xwiki.test.docker.junit5.UITest;
 import org.xwiki.test.ui.TestUtils;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasItems;
 
 /**
  * Tests the Prism.js Macro features.
@@ -37,6 +42,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 class PrismMacroIT
 {
     @Test
+    @Order(1)
     void verifyMacro(TestUtils setup, TestReference reference)
     {
         setup.loginAsSuperAdmin();
@@ -56,7 +62,29 @@ class PrismMacroIT
             public class PrismMacro extends AbstractMacro<PrismMacroParameters>
             {
             }
+            {{/prism}}
+
+            {{prism language="javascript" layout="linenumbers"}}
+            // Comment
+            let found = /a+b/g.test(String(42)) && Math.max(1, 2) > 0;
+            {{/prism}}
+
+            {{prism language="css"}}
+            @media print { p { color: red !important; background: url(prism.png); } }
+            {{/prism}}
+
+            {{prism language="php"}}
+            $variable = 'value';
             {{/prism}}""");
+
+        // Verify that all the highlighted text is readable, i.e. it respects the minimum contrast ratio of 4.5:1 for
+        // WCAG 2.x AA, and that the page has the most frequent kinds of tokens, so that they are all verified.
+        PrismCodeElement code = new PrismCodeElement();
+        assertThat(code.getTokenTypes(), hasItems("comment", "punctuation", "tag", "string", "attr-name",
+            "attr-value", "operator", "url", "keyword", "atrule", "function", "class-name", "regex", "important",
+            "variable", "number", "property", "selector"));
+        assertThat(code.getContrastIssues(), empty());
+        assertThat(code.getLineNumberContrastRatio(), greaterThanOrEqualTo(4.5));
 
         String source = setup.getDriver().getPageSource();
 
