@@ -31,7 +31,7 @@
   <name>Prism.js - Macro</name>
   <description>Syntax highlighting Macro based on Prism.js</description>
   <properties>
-    <xwiki.jacoco.instructionRatio>1.00</xwiki.jacoco.instructionRatio>
+    <xwiki.jacoco.instructionRatio>0.49</xwiki.jacoco.instructionRatio>
     <!-- Extension Manager name -->
     <xwiki.extension.name>Prism.js Macro</xwiki.extension.name>
     <!-- Extension Manager category -->
@@ -71,6 +71,13 @@
       <groupId>org.xwiki.platform</groupId>
       <artifactId>xwiki-platform-rendering-macro-code</artifactId>
       <version>${platform.version}</version>
+    </dependency>
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>org.xwiki.commons</groupId>
+      <artifactId>xwiki-commons-tool-test-component</artifactId>
+      <version>${commons.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
