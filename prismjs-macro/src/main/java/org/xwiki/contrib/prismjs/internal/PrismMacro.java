@@ -113,11 +113,6 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
     public List<Block> execute(PrismMacroParameters parameters, String content, MacroTransformationContext context)
         throws MacroExecutionException
     {
-        // TODO: Verify that when this macro is used several times on the page we don't generate several link and
-        // load several times the JS. We need to find a way to only do this once. This could be achieved by navigating
-        // the XDOM. However this would not support an include macro, including some doc using this macro.
-        // Maybe the use() APIs perform a check to only issue the same content once?
-
         // Load our own Prism theme instead of the default themes/prism.css one, since the default theme doesn't have
         // enough contrast for WCAG compliance.
         this.ssrxExtension.use("prism-accessible.css", RESOURCE_PARAMETERS);
