@@ -45,6 +45,9 @@ class CodeMacroSourceTest
         assertEquals("java", source.getLanguage());
     }
 
+    // JUnit evaluates unexpected.equals(actual): the object under test must be the first argument for its
+    // equals() to be the one called.
+    @SuppressWarnings("java:S3415")
     @Test
     void equalsAndHashCode()
     {
@@ -56,6 +59,7 @@ class CodeMacroSourceTest
         assertEquals(source, sameSource);
         assertEquals(source.hashCode(), sameSource.hashCode());
 
+        // Not assertNotNull(source): the goal is to verify that CodeMacroSource#equals(null) returns false.
         assertNotEquals(source, null);
         assertNotEquals(source, "content");
         assertNotEquals(source, new CodeMacroSource(new MacroContentSourceReference("string", "other"),

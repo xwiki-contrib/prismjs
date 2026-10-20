@@ -122,8 +122,12 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
         // enough contrast for WCAG compliance.
         this.ssrxExtension.use("prism-accessible.css", RESOURCE_PARAMETERS);
 
+        boolean hasLineNumbers = parameters.getLayout() == PrismMacroLayout.LINENUMBERS;
+
         // Add the styling for the line-numbers plugin
-        addCSSForLineNumberPluginIfNeeded(parameters);
+        if (hasLineNumbers) {
+            this.linkxExtension.use(getURL("plugins/line-numbers/prism-line-numbers.css"), CSS_PARAMETERS);
+        }
 
         // TODO: Once https://jira.xwiki.org/browse/XWIKI-12788 is implemented, remove RegisterPrismUIExtension and
         // the custom JS and instead use the js*x here.
@@ -141,16 +145,9 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
         } else {
             normalizedContent = "";
         }
-        String html = computeHTML(normalizedContent, parameters, context.isInline());
+        String html = computeHTML(normalizedContent, parameters.getLanguage(), hasLineNumbers, context.isInline());
 
         return Collections.singletonList(new RawBlock(html, Syntax.HTML_5_0));
-    }
-
-    private void addCSSForLineNumberPluginIfNeeded(PrismMacroParameters parameters)
-    {
-        if (parameters.getLayout().equals(PrismMacroLayout.LINENUMBERS)) {
-            this.linkxExtension.use(getURL("plugins/line-numbers/prism-line-numbers.css"), CSS_PARAMETERS);
-        }
     }
 
     private String getURL(String cssPath)
@@ -158,18 +155,18 @@ public class PrismMacro extends AbstractMacro<PrismMacroParameters>
         return  ((WebJarsScriptService) this.webjarsScriptService).url("org.webjars.npm:prismjs", cssPath);
     }
 
-    private String computeHTML(String content, PrismMacroParameters parameters, boolean isInline)
+    private String computeHTML(String content, String language, boolean hasLineNumbers, boolean isInline)
     {
-        return (isInline ? "" : computeOpeningPRE(parameters.getLayout()))
-            + "<code class=\"" + computeLanguageCSS(parameters.getLanguage()) + "\">"
+        return (isInline ? "" : computeOpeningPRE(hasLineNumbers))
+            + "<code class=\"" + computeLanguageCSS(language) + "\">"
             + content
             + "</code>"
             + (isInline ? "" : "</pre>");
     }
 
-    private String computeOpeningPRE(PrismMacroLayout layout)
+    private String computeOpeningPRE(boolean hasLineNumbers)
     {
-        return String.format("<pre%s>", layout.equals(PrismMacroLayout.LINENUMBERS) ? " class=\"line-numbers\"" : "");
+        return hasLineNumbers ? "<pre class=\"line-numbers\">" : "<pre>";
     }
 
     private String computeLanguageCSS(String language)

@@ -139,6 +139,17 @@ class PrismMacroTest
     }
 
     @Test
+    void executeWithNullLayout() throws Exception
+    {
+        PrismMacroParameters parameters = new PrismMacroParameters();
+        parameters.setLanguage("java");
+        parameters.setLayout(null);
+
+        assertEquals("<pre><code class=\"language-java\">code</code></pre>", execute(parameters, "code"));
+        verify(this.linkx, never()).use(eq("/webjars/plugins/line-numbers/prism-line-numbers.css"), any());
+    }
+
+    @Test
     void executeInline() throws Exception
     {
         this.context.setInline(true);

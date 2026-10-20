@@ -30,35 +30,9 @@ public enum PrismMacroLayout
     /**
      * Don't display line numbers.
      */
-    PLAIN(Constants.PLAIN_HINT),
+    PLAIN,
     /**
      * Display line numbers.
      */
-    LINENUMBERS(Constants.LINENUMBERS_HINT);
-
-    private String hint;
-
-    PrismMacroLayout(String hint)
-    {
-        this.hint = hint;
-    }
-
-    /**
-     * Convenience class holding hint values. Links the outer enum class to the component classes as it is not
-     * possible to reference enums in annotations (and avoids using plain strings).
-     * 
-     * @version $Id$
-     */
-    public static class Constants
-    {
-        /**
-         * @see PrismMacroLayout#PLAIN
-         */
-        public static final String PLAIN_HINT = "plain";
-
-        /**
-         * @see PrismMacroLayout#LINENUMBERS
-         */
-        public static final String LINENUMBERS_HINT = "linenumbers";
-    }
+    LINENUMBERS
 }
