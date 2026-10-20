@@ -73,6 +73,10 @@ class PrismMacroTest
     @Named("jsrx")
     private SkinExtension jsrx;
 
+    @MockComponent
+    @Named("ssrx")
+    private SkinExtension ssrx;
+
     @MockComponent(classToMock = WebJarsScriptService.class)
     @Named("webjars")
     private ScriptService webjars;
@@ -98,7 +102,8 @@ class PrismMacroTest
 
         assertEquals("<pre><code class=\"language-java\">a &#60; b &#38;&#38; c</code></pre>",
             execute(parameters, "a < b && c"));
-        verify(this.linkx).use(eq("/webjars/themes/prism.css"), any());
+        verify(this.ssrx).use(eq("prism-accessible.css"), any());
+        verify(this.linkx, never()).use(eq("/webjars/themes/prism.css"), any());
         verify(this.linkx, never()).use(eq("/webjars/plugins/line-numbers/prism-line-numbers.css"), any());
         verify(this.jsrx).use(eq("load-prism.js"), any());
     }
