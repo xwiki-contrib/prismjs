@@ -31,7 +31,7 @@
   <name>Prism.js - Macro</name>
   <description>Syntax highlighting Macro based on Prism.js</description>
   <properties>
-    <xwiki.jacoco.instructionRatio>0.49</xwiki.jacoco.instructionRatio>
+    <xwiki.jacoco.instructionRatio>0.68</xwiki.jacoco.instructionRatio>
     <!-- Extension Manager name -->
     <xwiki.extension.name>Prism.js Macro</xwiki.extension.name>
     <!-- Extension Manager category -->
